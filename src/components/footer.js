@@ -7,7 +7,7 @@ export default class extends React.Component {
     render() {
         return (
             <footer className='footer'>
-                <p className='footerText'>Copyright © 2021 Dan Chalifa - Michael Gardner - Las Recetas de Mama - All rights reserved</p>   
+                <p className='footerText'>Copyright © 2026 Dan Chalifa - Michael Gardner - Las Recetas de Mama - All rights reserved</p>   
             </footer>
         );
     }
