@@ -22,12 +22,12 @@ export default class extends React.Component {
 
     render() {
         return (
-          <div id="categories" style={{paddingLeft: '50px', paddingRight: '50px', paddingTop:'50px'}}>
-            <div style={{ marginTop: "100px" }}></div>
+          <div id="categories" className="categories-container">
+            <div className="categories-spacer"></div>
             {this.props.english ? (
-              <h1 style={{ textAlign: "center", fontWeight: 'bold', fontSize: '50px'}}>Categories</h1>
+              <h1 className="categories-title">Categories</h1>
             ) : (
-              <h1 style={{ textAlign: "center", fontWeight: 'bold', fontSize:'50px'}}>Categorias</h1>
+              <h1 className="categories-title">Categorias</h1>
             )}
 
             <div><br></br></div>
@@ -79,9 +79,9 @@ const Mosaic = (props)=> {
   if(props.english){
       return (
         <div className={classes.root}>
-          <Grid container spacing={4}>
+          <Grid container spacing={2}>
             {props.categories.map((category,index) => (
-              <Grid key={index} item xs={4} onClick={() => handleClick(category)}>
+              <Grid key={index} item xs={12} sm={6} md={4} onClick={() => handleClick(category)}>
                 {index % 2 === 0 || index%3===2 ? (
                   <Paper className={classes.paper}>
                     {category.Type_English}
@@ -99,9 +99,9 @@ const Mosaic = (props)=> {
   } else {
       return (
         <div className={classes.root}>
-          <Grid container  spacing={3}>
+          <Grid container spacing={2}>
             {props.categories.map((category, index) => (
-              <Grid key={index} item xs={4} onClick={() => handleClick(category)}>
+              <Grid key={index} item xs={12} sm={6} md={4} onClick={() => handleClick(category)}>
                 {index%3===0 || index%3===2 ? (
                   <Paper className={classes.paper}>{category.Type}</Paper>
                 ) : (

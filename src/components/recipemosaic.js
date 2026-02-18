@@ -89,8 +89,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   gridList: {
-    width: 1120,
-    height: 900,
+    width: "100%",
+    maxWidth: 1120,
+    height: "auto",
   },
 }));
 
@@ -161,10 +162,7 @@ const RecipeMosaic = (props) => {
 
   if (props.english) {
     return (
-      <div
-        className={classes.root}
-        style={{ backgroundColor: "rgb(190,190,190)", padding: "80px" }}
-      >
+      <div className={`${classes.root} recipe-grid-container`}>
         <GridList cellHeight={160} className={classes.gridList} cols={5}>
           {props.recipes.map((recipe) => (
             <GridListTile
@@ -181,10 +179,7 @@ const RecipeMosaic = (props) => {
     );
   } else {
     return (
-      <div
-        className={classes.root}
-        style={{ backgroundColor: "rgb(190,190,190)", padding: "80px" }}
-      >
+      <div className={`${classes.root} recipe-grid-container`}>
         <GridList cellHeight={160} className={classes.gridList} cols={5}>
           {props.recipes.map((recipe) => (
             <GridListTile

@@ -1,3 +1,10 @@
 .mainPadding{
     padding-top: 50px;
   }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .mainPadding {
+    padding-top: 70px;
+  }
+}

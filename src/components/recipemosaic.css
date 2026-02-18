@@ -28,3 +28,33 @@
     background: url('../images/BannerMastBlue.png') no-repeat;
     background-size: 100% 100%;
 }
+
+.recipe-grid-container {
+  background-color: rgb(190, 190, 190);
+  padding: 80px;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .outerMost {
+    padding-top: 70px;
+  }
+
+  .headerClass {
+    font-size: 28px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .imageClassBlue {
+    height: 100px;
+  }
+
+  .recipe-grid-container {
+    padding: 15px;
+  }
+}

@@ -4,3 +4,40 @@
     text-align: center;
 }
 
+.categories-container {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 50px;
+}
+
+.categories-spacer {
+    margin-top: 100px;
+}
+
+.categories-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .categories-container {
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 70px;
+    }
+
+    .categories-spacer {
+        margin-top: 20px;
+    }
+
+    .categories-title {
+        font-size: 28px;
+    }
+
+    .headerTitle {
+        font-size: 24px;
+    }
+}
+
