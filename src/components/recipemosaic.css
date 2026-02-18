@@ -1,0 +1,30 @@
+.outerMost{
+    background-color: rgb(190,190,190);
+    padding-top: 50px;
+    padding-left: 0px;
+}
+
+.headerClass{
+    font-size: 60px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.subtitle{
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 20px;
+    color: white;
+}
+
+.mosaicBG{
+    background-color: grey;
+}
+
+.imageClassBlue{
+    position: relative;
+    width: 100%;
+    height: 150px;
+    background: url('../images/BannerMastBlue.png') no-repeat;
+    background-size: 100% 100%;
+}

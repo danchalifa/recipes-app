@@ -1,0 +1,60 @@
+.mainDiv{
+    margin-left: 20%;
+    margin-right: 20%;
+    background: white;
+    padding-left: 5%;
+    padding-right: 5%;;
+}
+
+.outerDiv{
+    background: rgb(190,190,190);
+    padding-top: 50px;
+}
+
+.imageClass {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    color: rgb(0, 0, 0);
+    background: url('../images/DarkBanner.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.bookImage {
+    float:right;
+    margin-left: 30px;
+    min-width: 100px;
+    max-width: 100%;
+}
+
+.title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 60px;
+    width: 100%;
+    height: 100%;
+    color:white;
+}
+
+.sectionHeader {
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+    color: black;
+}
+
+.subTitle {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;;
+}
+
+.body{
+    font-size: 28px;
+}
+
+.headBody{
+    text-align: left;
+    font-size: 24px;
+}
