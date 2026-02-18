@@ -7,6 +7,7 @@ import RecipeMosaic from "./components/recipemosaic.js"
 import Recipe from "./components/recipe"
 import { Route, Switch } from 'react-router-dom';
 import Footer from './components/footer.js'
+import { Analytics } from '@vercel/analytics/react';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { instanceOf } from "prop-types";
@@ -71,6 +72,7 @@ class App extends Component {
           />
         </Switch>
         <Footer />
+        <Analytics />
       </main>
     );
   }
