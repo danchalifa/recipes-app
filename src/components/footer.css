@@ -1,8 +1,8 @@
 .footer {
   /* The old rule was height:50px with line-height:50px, so the copyright line
      wrapped to three 50px-tall lines on a phone and overflowed the bar. */
-  background: rgb(60, 60, 60);
-  color: #fff;
+  background: var(--footer-bg);
+  color: var(--footer-ink);
   padding: 18px 16px;
   text-align: center;
 }
@@ -11,5 +11,5 @@
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--footer-ink-soft);
 }

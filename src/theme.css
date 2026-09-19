@@ -1,14 +1,28 @@
 /* Design tokens. Imported once from index.js so every component can share the
-   palette, spacing and type scale instead of hard-coding hex values. */
-:root {
-  /* The palette is designed light-only; declaring it stops browsers (and
-     Chrome's auto-dark feature) from inverting surfaces and form controls. */
+   palette, spacing and type scale instead of hard-coding hex values.
+
+   Both themes declare the same token names, so component CSS needs no
+   dark-mode rules of its own — it just reads tokens. The active theme lives in
+   a `data-theme` attribute on <html>, set before the first paint by the inline
+   script in public/index.html and updated afterwards by src/lib/theme.js.
+   There is deliberately no `prefers-color-scheme` copy of the palette here:
+   that script always sets the attribute (and falls back to the OS preference),
+   so a second copy would only be somewhere for the two to drift apart. */
+:root,
+:root[data-theme="light"] {
+  /* Declaring the scheme stops browsers (and Chrome's auto-dark feature) from
+     inverting surfaces and form controls behind our back. */
   color-scheme: light;
 
   --purple: #8675bb;
   --purple-alt: #9f7dba;
   --purple-dark: #5f5192;
   --purple-tint: #efecf7;
+  /* The accent when it is used as *text* on a surface. Split out from
+     --purple-dark because the two roles diverge in dark mode: a fill sitting
+     behind white text has to stay dark, while text on a dark surface has to go
+     light. In this theme the two happen to be the same colour. */
+  --purple-text: #5f5192;
 
   --ink: #23212b;
   --ink-soft: #5b5766;
@@ -16,12 +30,29 @@
 
   --surface: #ffffff;
   --surface-alt: #f6f5f9;
+  /* Translucent variants: the sticky filter toolbar, and the language chip
+     that sits on top of a recipe image. */
+  --surface-blur: rgba(255, 255, 255, 0.96);
+  --surface-scrim: rgba(255, 255, 255, 0.92);
   --line: #e2dfea;
+
+  --danger: #a3364a;
+
+  /* Off state of the pill switches; the thumb stays white in both themes. */
+  --switch-off: #c9c5d4;
+
+  --footer-bg: rgb(60, 60, 60);
+  --footer-ink: #ffffff;
+  --footer-ink-soft: rgba(255, 255, 255, 0.85);
 
   --radius: 12px;
   --radius-pill: 999px;
   --shadow: 0 1px 2px rgba(35, 33, 43, 0.06), 0 6px 18px rgba(35, 33, 43, 0.08);
   --shadow-lift: 0 2px 4px rgba(35, 33, 43, 0.08), 0 12px 28px rgba(35, 33, 43, 0.14);
+
+  /* The <select> arrow is a background image, so its colour is baked into the
+     data URI and has to be swapped per theme rather than inherited. */
+  --select-chevron: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%235b5766' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 
   /* Fluid type: no separate mobile font-size rule needed for these. */
   --step-title: clamp(1.75rem, 1.1rem + 3vw, 3.25rem);
@@ -33,6 +64,54 @@
 
   /* Height of the fixed navbar, used to offset page tops and scroll anchors. */
   --nav-height: 56px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* The purples are darkened, not lightened: each of them is a fill with white
+     text on top (buttons, chips, the recipe and category heroes), so they have
+     to hold 4.5:1 against #fff. --purple-text carries the light lavender used
+     for accent *text* on a dark surface. */
+  --purple: #7a68b4;
+  --purple-alt: #6f5ba8;
+  --purple-dark: #4e4180;
+  --purple-tint: #2b2540;
+  --purple-text: #bcaae8;
+
+  --ink: #ece9f3;
+  --ink-soft: #b1abc2;
+  --ink-faint: #8a849b;
+
+  /* --surface-alt stays the *recessed* backdrop it is in the light theme, so
+     cards and the navbar (--surface) still read as the raised layer. */
+  --surface: #1b1a22;
+  --surface-alt: #131218;
+  --surface-blur: rgba(27, 26, 34, 0.94);
+  --surface-scrim: rgba(27, 26, 34, 0.88);
+  --line: #35313f;
+
+  --danger: #ff8d9f;
+
+  --switch-off: #4a4557;
+
+  --footer-bg: #0f0e13;
+  --footer-ink: #ece9f3;
+  --footer-ink-soft: rgba(236, 233, 243, 0.72);
+
+  /* Tinted shadows vanish on a dark ground; black at a higher alpha reads. */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.55), 0 12px 28px rgba(0, 0, 0, 0.55);
+
+  --select-chevron: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23b1abc2' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+/* Bootstrap's reboot is imported from App.js, i.e. after this file, and sets
+   body colours on a bare `body` selector. The attribute makes this specific
+   enough to win without an !important. */
+:root[data-theme] body {
+  color: var(--ink);
+  background: var(--surface);
 }
 
 .swatch-0 { background: linear-gradient(135deg, #8675bb, #6d5da3); }
@@ -47,7 +126,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 3px solid var(--purple-dark);
+  outline: 3px solid var(--purple-text);
   outline-offset: 2px;
 }
 

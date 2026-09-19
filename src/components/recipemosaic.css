@@ -62,7 +62,7 @@
 }
 
 .category-state--error {
-  color: #a3364a;
+  color: var(--danger);
 }
 
 .category-state__title {
