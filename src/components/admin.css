@@ -130,12 +130,12 @@
 
 .admin-button--ghost {
   background: transparent;
-  color: var(--purple);
+  color: var(--purple-text);
 }
 
 .admin-button--ghost:hover:not(:disabled) {
   background: var(--purple-tint);
-  color: var(--purple-dark);
+  color: var(--purple-text);
 }
 
 .admin-notice,
@@ -148,12 +148,12 @@
 
 .admin-notice {
   background: var(--purple-tint);
-  color: var(--purple-dark);
+  color: var(--purple-text);
 }
 
 .admin-error {
-  background: #fdecec;
-  color: #99231f;
+  background: var(--danger-surface);
+  color: var(--danger);
 }
 
 .admin-toolbar {

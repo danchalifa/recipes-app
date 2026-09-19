@@ -37,6 +37,8 @@
   --line: #e2dfea;
 
   --danger: #a3364a;
+  /* Tinted block behind --danger text, used by the admin page's error banner. */
+  --danger-surface: #fdecec;
 
   /* Off state of the pill switches; the thumb stays white in both themes. */
   --switch-off: #c9c5d4;
@@ -92,6 +94,7 @@
   --line: #35313f;
 
   --danger: #ff8d9f;
+  --danger-surface: #3a1d22;
 
   --switch-off: #4a4557;
 
