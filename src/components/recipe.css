@@ -1,113 +1,141 @@
-.outerMost{
-    padding-left: 20px;
-    padding-bottom: 200px;
-    background-color: white
-
+/* Namespaced under .recipe-* so nothing here leaks into the category or
+   featured-recipe pages the way the old .outerMost / .headerText rules did. */
+.recipe-page {
+  background: var(--surface);
+  min-height: 100vh;
+  padding-top: var(--nav-height);
 }
 
-.recipeTitle{
-    text-align: left;
-    display: block;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    font-weight: bold;
-    font-size: 60px;
-    width: 100%;
-    height: 100%;
-    padding-left: 20px;
+.recipe-hero {
+  background: linear-gradient(135deg, var(--purple-dark), var(--purple-alt));
+  color: #fff;
 }
 
-.bodyFormat{
-    text-align: left;
-    display: block;
-    justify-content: center;
-    align-items: center;
-    margin-left: 100px;
-    margin-right:200px;
-    font-size: 20px;
+.recipe-hero__inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 26px 16px 24px;
 }
 
-.headerText{
-    text-align: left;
-    display: block;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    font-weight: bold;
-    font-size: 40px;
-    width: 100%;
-    height: 100%;
+.recipe-hero__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.recipeBanner{
-    text-align: center;
-    display: block;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    width: 100%;
-    height: 200px;
+.recipe-hero__back:hover,
+.recipe-hero__back:focus-visible {
+  color: #fff;
+  text-decoration: underline;
 }
 
-.image {
-    position: relative;
-    width: 100%;
-    height: 150px;
-    color: white;
-    background: url('../images/BannerMast.png') no-repeat;
-    background-size: 100% 100%;
+.recipe-hero__title {
+  margin: 6px 0 16px;
+  font-size: var(--step-title);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
-.subHeader{
-    text-align: left;
-    display: block;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    color: rgb(120,120,120);
-    font-weight: bold;
-    font-size: 16px;;
+.recipe-hero__times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin: 0;
 }
 
-.mainPadding{
-    padding-top: 50px;
+.recipe-hero__times dt {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.recipe-hero__times dd {
+  margin: 2px 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.recipe-body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 16px 72px;
+}
+
+.recipe-section + .recipe-section {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+
+.recipe-section__title {
+  margin: 0 0 14px;
+  font-size: var(--step-heading);
+  font-weight: 800;
+  color: var(--purple-dark);
+}
+
+.recipe-section__text {
+  /* The old rule pinned 100px/200px side margins, which pushed text off a
+     phone screen. A ch-based measure keeps lines readable at every width. */
+  max-width: 68ch;
+  font-size: var(--step-body);
+  line-height: 1.7;
+  color: var(--ink);
+  /* Long ingredient lines (URLs, unbroken words) must not force h-scroll. */
+  overflow-wrap: anywhere;
+}
+
+.recipe-state {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 80px 16px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: var(--step-body);
+}
+
+.recipe-state__title {
+  margin: 0 0 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.recipe-state__button {
+  display: inline-block;
+  min-height: var(--tap);
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
+  background: var(--purple);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.recipe-state__button:hover,
+.recipe-state__button:focus-visible {
+  background: var(--purple-dark);
+  color: #fff;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .recipe-hero__inner {
+    padding: 18px 14px 20px;
   }
 
-/* Mobile responsive styles */
-@media (max-width: 768px) {
-  .recipeTitle {
-    font-size: 28px;
-    padding-left: 15px;
-    padding-right: 15px;
+  .recipe-hero__times {
+    gap: 8px 20px;
   }
 
-  .bodyFormat {
-    margin-left: 15px;
-    margin-right: 15px;
-    font-size: 16px;
-  }
-
-  .headerText {
-    font-size: 24px;
-    padding-left: 15px;
-  }
-
-  .outerMost {
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 100px;
-  }
-
-  .subHeader {
-    font-size: 14px;
-  }
-
-  .image {
-    height: 120px;
-  }
-
-  .mainPadding {
-    padding-top: 70px;
+  .recipe-body {
+    padding: 22px 14px 56px;
   }
 }

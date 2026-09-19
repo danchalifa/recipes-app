@@ -1,198 +1,202 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
-import { useHistory } from "react-router-dom";
-import logo1 from "../images/color-palette/1.jpg";
-import logo2 from "../images/color-palette/2.jpg";
-import logo3 from "../images/color-palette/3.jpg";
-import logo4 from "../images/color-palette/4.jpg";
-import logo5 from "../images/color-palette/5.jpg";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { fetchCategories, fetchRecipesForCategory } from "../lib/api";
+import { categoryName } from "../lib/format";
+import { filterRecipes, hasActiveFilters, SORTS } from "../lib/filters";
+import RecipeCard from "./recipecard";
+import RecipeToolbar from "./recipetoolbar";
 import "./recipemosaic.css";
 
-
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { recipes: [] };
-    this.category = this.props.location.pathname.replace("/category/", "");
-    this.categorySelected = "";
-
-  }
-
-
-  componentDidMount() {
-    fetch('/api/recipesForCategory?category=' + this.category)
-      .then((res) => res.json())
-      .then((res) => this.setState({ recipes: this.state.recipes.concat(res) }))
-      .then(
-        (res) =>
-          (this.categorySelected = res.find((obj) => {
-            return obj.CatID === this.category;
-          }))
-      )
-      .catch((err) => err);
-  }
-
-
-  render() {
-    if (this.props.english) {
-      return (
-        <div className="outerMost">
-          <div>
-            <div className="imageClassBlue">
-              <p className="headerClass">
-                {this.props.location.state.categoryInContext.Type_English}
-              </p>
-              <p className="subtitle">Click on a recipe to view</p>
-            </div>
-          </div>
-
-          <RecipeMosaic
-            recipes={this.state.recipes}
-            english={this.props.english}
-          />
-        </div>
-
-      );
-    } else {
-      return (
-
-        <div className="outerMost" >
-          <div>
-            <div className="imageClassBlue">
-              <p className="headerClass">
-                {this.props.location.state.categoryInContext.Type}
-              </p>
-              <p className="subtitle">Haz click para ver la receta</p>
-            </div>
-          </div>
-          <RecipeMosaic
-            recipes={this.state.recipes}
-            english={this.props.english}
-          />
-        </div>
-
-      );
-    }
-  }
-}
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-    height: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    width: "100%",
-    maxWidth: 1120,
-    height: "auto",
-  },
-}));
-
-const RecipeMosaic = (props) => {
-  const classes = useStyles();
-  const history = useHistory();
-  // const pattern = [1, 3, 1, 1, 2, 1, 1, 2, 1, 2];
-  // val["cols"] = pattern[index] % (pattern.length - 1);
-  // let randNumOneThroughFour = Math.floor(Math.random() * 3) + 1;
-
-  // Generate random mosaic
-  let currentRowSize = 0;
-  var weightedRandomNumber = () => {
-    var num = Math.floor(Math.random() * 100);
-    if (num < 40) return 1;
-    if (num < 80) return 2;
-    if (num < 100) return 3;
-  };
-
-  let randNumOneThroughThree = weightedRandomNumber();
-  for (let [index, val] of props.recipes.entries()) {
-    if (index === props.recipes.length - 1) {
-      val["cols"] = 5 - currentRowSize;
-    } else {
-      randNumOneThroughThree = weightedRandomNumber();
-
-      if (currentRowSize + randNumOneThroughThree > 5) {
-        val["cols"] = 5 - currentRowSize;
-        currentRowSize = 0;
-      } else {
-        val["cols"] = randNumOneThroughThree;
-        currentRowSize += randNumOneThroughThree;
-
-        if (currentRowSize === 5) {
-          currentRowSize = 0;
-        }
-      }
-    }
-  }
-
-
-  var handleClick = (recipe) => {
-    var recipeParsed = recipe.Name.replace(/[^\w\s]/gi, "");
-    var route = "/recipe/" + recipeParsed;
-    history.push({
-      pathname: route,
-      state: { recipe: recipe },
-    });
-  };
-
-  var getRandomLogo = () => {
-    var logoNumber = Math.floor(Math.random() * 5) + 1;
-    switch (logoNumber) {
-      case 1:
-        return <img src={logo1} style={{ pointerEvents: "none" }} alt="color1" />;
-      case 2:
-        return <img src={logo2} style={{ pointerEvents: "none" }} alt="color2" />;
-      case 3:
-        return <img src={logo3} style={{ pointerEvents: "none" }} alt="color2"/>;
-      case 4:
-        return <img src={logo4} style={{ pointerEvents: "none" }} alt="color3" />;
-      case 5:
-        return <img src={logo5} style={{ pointerEvents: "none" }} alt="color4"/>;
-      default: 
-        return <img src={logo1} style={{ pointerEvents: "none" }} alt="color1" />;
-    }
-  };
-
-  if (props.english) {
-    return (
-      <div className={`${classes.root} recipe-grid-container`}>
-        <GridList cellHeight={160} className={classes.gridList} cols={5}>
-          {props.recipes.map((recipe) => (
-            <GridListTile
-              key={recipe.Name}
-              cols={recipe.cols}
-              onClick={() => handleClick(recipe)}
-            >
-              {getRandomLogo()}
-              <GridListTileBar title={recipe.Name_English} />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
-    );
-  } else {
-    return (
-      <div className={`${classes.root} recipe-grid-container`}>
-        <GridList cellHeight={160} className={classes.gridList} cols={5}>
-          {props.recipes.map((recipe) => (
-            <GridListTile
-              key={recipe.Name}
-              cols={recipe.cols}
-              onClick={() => handleClick(recipe)}
-            >
-              {getRandomLogo()}
-              <GridListTileBar title={recipe.Name} />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
-    );
-  }
+const DEFAULTS = {
+  query: "",
+  sort: SORTS.name,
+  maxMinutes: 0,
+  noCook: false,
+  momOnly: false,
 };
+
+// Filter state lives in the URL so a filtered view is shareable and the browser
+// back button steps back through filters instead of leaving the page.
+const readParams = (search) => {
+  const params = new URLSearchParams(search);
+  const sort = params.get("sort");
+  return {
+    query: params.get("q") || "",
+    sort: Object.values(SORTS).includes(sort) ? sort : DEFAULTS.sort,
+    maxMinutes: params.get("max") === "30" ? 30 : 0,
+    noCook: params.get("nocook") === "1",
+    momOnly: params.get("mom") === "1",
+  };
+};
+
+const writeParams = (state) => {
+  const params = new URLSearchParams();
+  if (state.query) params.set("q", state.query);
+  if (state.sort !== DEFAULTS.sort) params.set("sort", state.sort);
+  if (state.maxMinutes) params.set("max", String(state.maxMinutes));
+  if (state.noCook) params.set("nocook", "1");
+  if (state.momOnly) params.set("mom", "1");
+  const qs = params.toString();
+  return qs ? `?${qs}` : "";
+};
+
+const CategoryPage = ({ english }) => {
+  const { categoryId } = useParams();
+  const location = useLocation();
+  const history = useHistory();
+
+  const [recipes, setRecipes] = useState([]);
+  const [category, setCategory] = useState(
+    // Use the category handed over by the click, if any, so the title paints
+    // immediately; the fetch below still runs for direct visits.
+    (location.state && location.state.categoryInContext) || null
+  );
+  const [status, setStatus] = useState("loading");
+
+  const filters = useMemo(() => readParams(location.search), [location.search]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setStatus("loading");
+
+    Promise.all([fetchRecipesForCategory(categoryId), fetchCategories()])
+      .then(([recipeList, categories]) => {
+        if (cancelled) return;
+        setRecipes(Array.isArray(recipeList) ? recipeList : []);
+        const match = categories.find(
+          (item) => String(item.CatID) === String(categoryId)
+        );
+        if (match) setCategory(match);
+        setStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [categoryId]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [categoryId]);
+
+  const applyFilters = useCallback(
+    (next) => {
+      // replace() rather than push() while typing, so one search doesn't bury
+      // the previous page under a dozen history entries.
+      history.replace({
+        pathname: location.pathname,
+        search: writeParams(next),
+        state: location.state,
+      });
+    },
+    [history, location.pathname, location.state]
+  );
+
+  const visible = useMemo(
+    () => filterRecipes(recipes, { ...filters, english }),
+    [recipes, filters, english]
+  );
+
+  const title = category
+    ? categoryName(category, english)
+    : english
+    ? "Recipes"
+    : "Recetas";
+
+  const copy = english
+    ? {
+        back: "All categories",
+        loading: "Loading recipes…",
+        error: "We couldn't load these recipes. Please try again.",
+        empty: "No recipes match these filters.",
+        emptyHint: "Try clearing a filter or searching for something else.",
+        clear: "Clear all filters",
+      }
+    : {
+        back: "Todas las categorías",
+        loading: "Cargando recetas…",
+        error: "No pudimos cargar estas recetas. Inténtalo de nuevo.",
+        empty: "Ninguna receta coincide con estos filtros.",
+        emptyHint: "Prueba quitando un filtro o buscando otra cosa.",
+        clear: "Quitar todos los filtros",
+      };
+
+  return (
+    <div className="category-page">
+      <header className="category-hero">
+        <div className="category-hero__inner">
+          <Link className="category-hero__back" to="/#categories">
+            <span aria-hidden="true">←</span> {copy.back}
+          </Link>
+          <h1 className="category-hero__title">{title}</h1>
+          {status === "ready" && (
+            <p className="category-hero__subtitle">
+              {english
+                ? `${recipes.length} ${
+                    recipes.length === 1 ? "recipe" : "recipes"
+                  } · tap one to open it`
+                : `${recipes.length} ${
+                    recipes.length === 1 ? "receta" : "recetas"
+                  } · toca una para verla`}
+            </p>
+          )}
+        </div>
+      </header>
+
+      {status === "ready" && recipes.length > 0 && (
+        <RecipeToolbar
+          english={english}
+          value={filters}
+          onChange={applyFilters}
+          shown={visible.length}
+          total={recipes.length}
+          showClear={hasActiveFilters(filters)}
+          onClear={() => applyFilters(DEFAULTS)}
+        />
+      )}
+
+      <div className="category-body">
+        {status === "loading" && (
+          <p className="category-state" role="status">
+            {copy.loading}
+          </p>
+        )}
+
+        {status === "error" && (
+          <p className="category-state category-state--error" role="alert">
+            {copy.error}
+          </p>
+        )}
+
+        {status === "ready" && visible.length === 0 && (
+          <div className="category-state">
+            <p className="category-state__title">{copy.empty}</p>
+            <p className="category-state__hint">{copy.emptyHint}</p>
+            <button
+              type="button"
+              className="category-state__button"
+              onClick={() => applyFilters(DEFAULTS)}
+            >
+              {copy.clear}
+            </button>
+          </div>
+        )}
+
+        {status === "ready" && visible.length > 0 && (
+          <ul className="recipe-grid">
+            {visible.map((recipe) => (
+              <li key={recipe.RowID}>
+                <RecipeCard recipe={recipe} english={english} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default CategoryPage;

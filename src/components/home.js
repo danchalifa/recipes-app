@@ -1,20 +1,17 @@
-import React from 'react';
-//import logo from '../images/tablecloth.jpeg'; // Tell webpack this JS file uses this image
-import Banner from "./banner.js"
-import CategoryMosaic from './categorymosaic.js'
-import FeaturedRecipes from './featuredrecipies.js'
-import './home.css'
+import React from "react";
+import Banner from "./banner.js";
+import CategoryMosaic from "./categorymosaic.js";
+import FeaturedRecipes from "./featuredrecipies.js";
+import HomeSearch from "./homesearch.js";
+import "./home.css";
 
-export default class extends React.Component {
+const Home = ({ english }) => (
+  <div id="Home" className="home">
+    <Banner />
+    <HomeSearch english={english} />
+    <CategoryMosaic english={english} />
+    <FeaturedRecipes english={english} />
+  </div>
+);
 
-    render() {
-        return (
-          <div id={"Home"} className='mainPadding'>
-            <Banner />
-            <CategoryMosaic {...this.props} />
-            <FeaturedRecipes {...this.props} />
-          </div>
-        );
-    }
-
-}
+export default Home;

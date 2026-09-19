@@ -1,0 +1,59 @@
+/* Design tokens. Imported once from index.js so every component can share the
+   palette, spacing and type scale instead of hard-coding hex values. */
+:root {
+  /* The palette is designed light-only; declaring it stops browsers (and
+     Chrome's auto-dark feature) from inverting surfaces and form controls. */
+  color-scheme: light;
+
+  --purple: #8675bb;
+  --purple-alt: #9f7dba;
+  --purple-dark: #5f5192;
+  --purple-tint: #efecf7;
+
+  --ink: #23212b;
+  --ink-soft: #5b5766;
+  --ink-faint: #8a8695;
+
+  --surface: #ffffff;
+  --surface-alt: #f6f5f9;
+  --line: #e2dfea;
+
+  --radius: 12px;
+  --radius-pill: 999px;
+  --shadow: 0 1px 2px rgba(35, 33, 43, 0.06), 0 6px 18px rgba(35, 33, 43, 0.08);
+  --shadow-lift: 0 2px 4px rgba(35, 33, 43, 0.08), 0 12px 28px rgba(35, 33, 43, 0.14);
+
+  /* Fluid type: no separate mobile font-size rule needed for these. */
+  --step-title: clamp(1.75rem, 1.1rem + 3vw, 3.25rem);
+  --step-heading: clamp(1.35rem, 1rem + 1.6vw, 2.25rem);
+  --step-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+
+  /* Minimum comfortable touch target (iOS HIG / Material both say 44px). */
+  --tap: 44px;
+
+  /* Height of the fixed navbar, used to offset page tops and scroll anchors. */
+  --nav-height: 56px;
+}
+
+.swatch-0 { background: linear-gradient(135deg, #8675bb, #6d5da3); }
+.swatch-1 { background: linear-gradient(135deg, #9f7dba, #8461a1); }
+.swatch-2 { background: linear-gradient(135deg, #6f7fbc, #5a68a4); }
+.swatch-3 { background: linear-gradient(135deg, #b07da8, #94648d); }
+.swatch-4 { background: linear-gradient(135deg, #7b6fae, #625795); }
+
+/* Visible focus ring for keyboard users on every interactive element. */
+.focus-ring:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--purple-dark);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

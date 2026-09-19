@@ -1,0 +1,51 @@
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  /* The whole control, label included, is a comfortable touch target. */
+  min-height: var(--tap);
+  padding: 4px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.lang-switch__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.lang-switch__track {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: #c9c5d4;
+  transition: background 160ms ease;
+}
+
+.lang-switch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(35, 33, 43, 0.35);
+  transition: transform 160ms ease;
+}
+
+.lang-switch__input:checked + .lang-switch__track {
+  background: var(--purple);
+}
+
+.lang-switch__input:checked + .lang-switch__track .lang-switch__thumb {
+  transform: translateX(18px);
+}
+
+.lang-switch__input:focus-visible + .lang-switch__track {
+  outline: 3px solid var(--purple-dark);
+  outline-offset: 2px;
+}

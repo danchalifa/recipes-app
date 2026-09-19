@@ -1,23 +1,9 @@
-import React from 'react';
-import Banner from '../images/BannerV2.png'; // Tell webpack this JS file uses this imag
-import './banner.css'
+import React from "react";
+import BannerImage from "../images/BannerV2.png";
+import "./banner.css";
 
+const Banner = () => (
+  <img src={BannerImage} alt="Las Recetas de Mamá" className="center" />
+);
 
-export default class extends React.Component {
-
-    render() {
-        return (
-            
-        <div>
-            <img src={Banner} alt="Banner Mast Head" className="center"/>
- 
-        </div>
-            
-
-
-
-        )
-    }
-
-}
-
+export default Banner;

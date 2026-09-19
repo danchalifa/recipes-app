@@ -1,15 +1,14 @@
-import React from 'react';
-import './footer.css'
+import React from "react";
+import "./footer.css";
 
-export default class extends React.Component {
-    
+const Footer = ({ english }) => (
+  <footer className="footer">
+    <p className="footer__text">
+      {english
+        ? "Copyright © 2026 Dan Chalifa · Michael Gardner · Las Recetas de Mamá · All rights reserved"
+        : "Copyright © 2026 Dan Chalifa · Michael Gardner · Las Recetas de Mamá · Todos los derechos reservados"}
+    </p>
+  </footer>
+);
 
-    render() {
-        return (
-            <footer className='footer'>
-                <p className='footerText'>Copyright © 2026 Dan Chalifa - Michael Gardner - Las Recetas de Mama - All rights reserved</p>   
-            </footer>
-        );
-    }
-}    
-
+export default Footer;

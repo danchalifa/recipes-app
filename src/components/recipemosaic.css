@@ -1,60 +1,102 @@
-.outerMost{
-    background-color: rgb(190,190,190);
-    padding-top: 50px;
-    padding-left: 0px;
+/* All selectors are namespaced under .category-* so they no longer collide with
+   recipe.css and featuredrecipes.css, which all previously defined .outerMost,
+   .mainPadding and .headerText globally. */
+.category-page {
+  background: var(--surface-alt);
+  min-height: 100vh;
+  padding-top: var(--nav-height);
 }
 
-.headerClass{
-    font-size: 60px;
-    text-align: center;
-    font-weight: bold;
+.category-hero {
+  background: linear-gradient(135deg, var(--purple-dark), var(--purple-alt));
+  color: #fff;
 }
 
-.subtitle{
-    font-size: 20px;
-    text-align: center;
-    padding-bottom: 20px;
-    color: white;
+.category-hero__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 28px 16px 26px;
 }
 
-.mosaicBG{
-    background-color: grey;
+.category-hero__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.imageClassBlue{
-    position: relative;
-    width: 100%;
-    height: 150px;
-    background: url('../images/BannerMastBlue.png') no-repeat;
-    background-size: 100% 100%;
+.category-hero__back:hover,
+.category-hero__back:focus-visible {
+  color: #fff;
+  text-decoration: underline;
 }
 
-.recipe-grid-container {
-  background-color: rgb(190, 190, 190);
-  padding: 80px;
+.category-hero__title {
+  margin: 6px 0 4px;
+  font-size: var(--step-title);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
-/* Mobile responsive styles */
-@media (max-width: 768px) {
-  .outerMost {
-    padding-top: 70px;
+.category-hero__subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.category-body {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 22px 16px 64px;
+}
+
+.category-state {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--ink-soft);
+  font-size: var(--step-body);
+}
+
+.category-state--error {
+  color: #a3364a;
+}
+
+.category-state__title {
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.category-state__hint {
+  margin: 0 0 18px;
+  font-size: 0.95rem;
+}
+
+.category-state__button {
+  min-height: var(--tap);
+  padding: 10px 22px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--purple);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.category-state__button:hover {
+  background: var(--purple-dark);
+}
+
+@media (max-width: 640px) {
+  .category-hero__inner {
+    padding: 18px 12px 20px;
   }
 
-  .headerClass {
-    font-size: 28px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .subtitle {
-    font-size: 16px;
-  }
-
-  .imageClassBlue {
-    height: 100px;
-  }
-
-  .recipe-grid-container {
-    padding: 15px;
+  .category-body {
+    padding: 18px 12px 48px;
   }
 }

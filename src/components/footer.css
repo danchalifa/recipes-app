@@ -1,22 +1,15 @@
-.footer{
-    display: block;
-    font-size: 16px;
-    color: white;
-    background-color: rgb(60, 60, 60);
-    background: rgb(60, 60, 60);
-    height: 50px;
-    width: 100%;
-    line-height: 50px;
-    bottom: 0;
-    left: 0;
+.footer {
+  /* The old rule was height:50px with line-height:50px, so the copyright line
+     wrapped to three 50px-tall lines on a phone and overflowed the bar. */
+  background: rgb(60, 60, 60);
+  color: #fff;
+  padding: 18px 16px;
+  text-align: center;
 }
 
-.footerText{
-    font-size: 16px;
-    margin-left: 20px;
-}
-
-.terms{
-    font-size: 16px;
-    float:right;
+.footer__text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
 }

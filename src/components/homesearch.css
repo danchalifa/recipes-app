@@ -1,0 +1,58 @@
+.home-search {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 16px 8px;
+  text-align: center;
+}
+
+.home-search__form {
+  display: flex;
+  gap: 10px;
+}
+
+.home-search__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  /* 16px minimum keeps iOS Safari from zooming the viewport on focus. */
+  font-size: 16px;
+  box-shadow: var(--shadow);
+}
+
+.home-search__button {
+  flex: 0 0 auto;
+  min-height: 52px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--purple);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.home-search__button:hover {
+  background: var(--purple-dark);
+}
+
+.home-search__hint {
+  margin: 10px 0 0;
+  font-size: 0.875rem;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 480px) {
+  .home-search {
+    padding: 22px 12px 4px;
+  }
+
+  .home-search__button {
+    padding: 12px 18px;
+  }
+}

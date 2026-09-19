@@ -1,0 +1,112 @@
+.search-page {
+  background: var(--surface-alt);
+  min-height: 100vh;
+  padding-top: var(--nav-height);
+}
+
+.search-page__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 26px 16px 72px;
+}
+
+.search-page__title {
+  margin: 0 0 16px;
+  font-size: var(--step-heading);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.search-page__field {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.search-page__icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+
+.search-page__input {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 18px 12px 46px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  /* 16px minimum stops iOS Safari from zooming the page on focus. */
+  font-size: 16px;
+  box-shadow: var(--shadow);
+}
+
+.search-page__count {
+  margin: 12px 0 20px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.search-group + .search-group {
+  margin-top: 34px;
+}
+
+.search-group__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--purple-dark);
+}
+
+.search-group__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: var(--purple-tint);
+  color: var(--purple-dark);
+  font-size: 0.78rem;
+}
+
+.search-state {
+  padding: 44px 8px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: var(--step-body);
+}
+
+.search-state--error {
+  color: #a3364a;
+}
+
+.search-state__title {
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.search-state__link {
+  display: inline-block;
+  margin-top: 16px;
+  font-weight: 700;
+  color: var(--purple-dark);
+}
+
+@media (max-width: 640px) {
+  .search-page__inner {
+    padding: 18px 12px 56px;
+  }
+}

@@ -1,17 +1,37 @@
-import React, { Component} from "react";
-import "./App.css";
-import Home from "./components/home.js"
-import About from "./components/about.js"
-import Navbar from "./components/navbar.js"
-import RecipeMosaic from "./components/recipemosaic.js"
-import Recipe from "./components/recipe"
-import { Route, Switch } from 'react-router-dom';
-import Footer from './components/footer.js'
-
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import React, { Component, useEffect } from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
 
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+
+import Home from "./components/home.js";
+import About from "./components/about.js";
+import Navbar from "./components/navbar.js";
+import CategoryPage from "./components/recipemosaic.js";
+import RecipePage from "./components/recipe.js";
+import SearchPage from "./components/search.js";
+import Footer from "./components/footer.js";
+
+// Replaces the history.listen() call that used to run inside a render function
+// in featuredrecipies.js, which registered a new listener on every render.
+const ScrollManager = () => {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const target = document.querySelector(hash);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+    }
+    window.scrollTo(0, 0);
+  }, [pathname, hash]);
+
+  return null;
+};
 
 class App extends Component {
   static propTypes = {
@@ -21,56 +41,53 @@ class App extends Component {
   constructor(props) {
     super(props);
     const { cookies } = props;
-    this.state = { 
-      apiResponse: "", 
-      english: cookies.get('english') === 'true' || false };
+    this.state = { english: cookies.get("english") === "true" };
   }
 
   toggleHandler = (checked) => {
     const { cookies } = this.props;
-
-    if (checked) {
-      cookies.set("english", true, { path: "/" });
-      this.setState({ english: true });
-    } else {
-      cookies.set("english", false, { path: "/" });
-      this.setState({ english: false });
-    }
+    cookies.set("english", checked ? "true" : "false", { path: "/" });
+    this.setState({ english: Boolean(checked) });
   };
 
   render() {
+    const { english } = this.state;
+
     return (
       <main>
-        <Navbar
-          toggleHandler={this.toggleHandler}
-          english={this.state.english}
-        />
+        <Navbar toggleHandler={this.toggleHandler} english={english} />
+        <ScrollManager />
         <Switch>
           <Route
             path="/"
-            render={(props) => <Home {...props} english={this.state.english} />}
             exact
+            render={(props) => <Home {...props} english={english} />}
           />
           <Route
             path="/about"
-            render={(props) => (
-              <About {...props} english={this.state.english} />
-            )}
+            render={(props) => <About {...props} english={english} />}
           />
           <Route
-            path="/category"
-            render={(props) => (
-              <RecipeMosaic {...props} english={this.state.english} />
-            )}
+            path="/search"
+            render={(props) => <SearchPage {...props} english={english} />}
           />
           <Route
-            path="/recipe"
-            render={(props) => (
-              <Recipe {...props} english={this.state.english} />
-            )}
+            path="/category/:categoryId"
+            render={(props) => <CategoryPage {...props} english={english} />}
+          />
+          {/* Canonical recipe URL: the numeric id disambiguates the two pairs of
+              recipes that share a name, the slug keeps the link readable. */}
+          <Route
+            path="/recipe/:recipeId(\d+)/:slug?"
+            render={(props) => <RecipePage {...props} english={english} />}
+          />
+          {/* Legacy shape (/recipe/Enchiladas%20Verdes) resolved by name. */}
+          <Route
+            path="/recipe/:slug"
+            render={(props) => <RecipePage {...props} english={english} />}
           />
         </Switch>
-        <Footer />
+        <Footer english={english} />
       </main>
     );
   }

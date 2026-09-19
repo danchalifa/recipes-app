@@ -1,43 +1,118 @@
-.headerTitle{
-    font-size: 40px;
-    font-weight: bold;
-    text-align: center;
+.categories {
+  background: var(--surface-alt);
+  padding: 48px 0 56px;
 }
 
-.categories-container {
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 50px;
+.categories__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
-.categories-spacer {
-    margin-top: 100px;
+.categories__title {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: var(--step-heading);
+  font-weight: 800;
+  color: var(--ink);
 }
 
-.categories-title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 50px;
+.categories__subtitle {
+  margin: 0 0 28px;
+  text-align: center;
+  font-size: var(--step-body);
+  color: var(--ink-soft);
 }
 
-/* Mobile responsive styles */
-@media (max-width: 768px) {
-    .categories-container {
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 70px;
-    }
-
-    .categories-spacer {
-        margin-top: 20px;
-    }
-
-    .categories-title {
-        font-size: 28px;
-    }
-
-    .headerTitle {
-        font-size: 24px;
-    }
+.categories__state {
+  text-align: center;
+  color: var(--ink-soft);
+  padding: 24px 0;
 }
 
+.categories__grid {
+  display: grid;
+  /* auto-fit + minmax gives 1 column on a phone, 2 on a tablet and 3-4 on a
+     desktop without maintaining three separate breakpoints. */
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.category-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  /* Comfortably above the 44px minimum touch target. */
+  min-height: 92px;
+  height: 100%;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.category-tile:hover,
+.category-tile:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  color: #fff;
+  text-decoration: none;
+}
+
+.category-tile__name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.category-tile__count {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.category-tile--0 { background: linear-gradient(135deg, #8675bb, #6d5da3); }
+.category-tile--1 { background: linear-gradient(135deg, #9f7dba, #8461a1); }
+.category-tile--2 { background: linear-gradient(135deg, #6f7fbc, #5a68a4); }
+.category-tile--3 { background: linear-gradient(135deg, #b07da8, #94648d); }
+.category-tile--4 { background: linear-gradient(135deg, #7b6fae, #625795); }
+
+@media (max-width: 640px) {
+  .categories {
+    padding: 32px 0 40px;
+  }
+
+  .categories__inner {
+    padding: 0 12px;
+  }
+
+  .categories__grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .category-tile {
+    /* Stack as a compact list on a phone: more categories visible per screen. */
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: var(--tap);
+    padding: 14px 16px;
+  }
+
+  .category-tile__name {
+    font-size: 1rem;
+  }
+
+  .category-tile__count {
+    white-space: nowrap;
+    font-size: 0.78rem;
+  }
+}

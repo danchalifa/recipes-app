@@ -1,119 +1,89 @@
-import React from 'react';
-import './categorymosaic.css'
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { fetchCategories } from "../lib/api";
+import { categoryName } from "../lib/format";
+import "./categorymosaic.css";
 
+const CategoryMosaic = ({ english }) => {
+  const [categories, setCategories] = useState([]);
+  const [status, setStatus] = useState("loading");
 
-export default class extends React.Component {
-    
-    constructor(props) {
-        super(props);
-        this.state = {categories:[], categoryInContext: {} };
-    }
+  useEffect(() => {
+    let cancelled = false;
+    fetchCategories()
+      .then((data) => {
+        if (cancelled) return;
+        setCategories(Array.isArray(data) ? data : []);
+        setStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-    componentDidMount() {
-        fetch('/api/types')
-            .then(res => res.json())
-            .then(res => this.setState({ categories: this.state.categories.concat(res)}))
-            .catch(err => err);
-    }
+  const copy = english
+    ? {
+        title: "Categories",
+        subtitle: "Pick a category, then sort or filter what's inside.",
+        loading: "Loading categories…",
+        error: "We couldn't load the categories. Please try again.",
+        count: (n) => `${n} ${n === 1 ? "recipe" : "recipes"}`,
+      }
+    : {
+        title: "Categorías",
+        subtitle: "Elige una categoría y luego ordena o filtra las recetas.",
+        loading: "Cargando categorías…",
+        error: "No pudimos cargar las categorías. Inténtalo de nuevo.",
+        count: (n) => `${n} ${n === 1 ? "receta" : "recetas"}`,
+      };
 
-    render() {
-        return (
-          <div id="categories" className="categories-container">
-            <div className="categories-spacer"></div>
-            {this.props.english ? (
-              <h1 className="categories-title">Categories</h1>
-            ) : (
-              <h1 className="categories-title">Categorias</h1>
-            )}
+  return (
+    <section id="categories" className="categories">
+      <div className="categories__inner">
+        <h2 className="categories__title">{copy.title}</h2>
+        <p className="categories__subtitle">{copy.subtitle}</p>
 
-            <div><br></br></div>
+        {status === "loading" && (
+          <p className="categories__state" role="status">
+            {copy.loading}
+          </p>
+        )}
 
-            <Mosaic
-              categories={this.state.categories}
-              english={this.props.english}
-            />
-          </div>
-        );
-    }
+        {status === "error" && (
+          <p className="categories__state" role="alert">
+            {copy.error}
+          </p>
+        )}
 
-}
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    backgroundColor: "#8675bb",
-    fontSize:"large",
-    fontWeight: "bold",
-    color: 'white'
-  },
-  paper2: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    backgroundColor: "#9f7dba",
-    fontSize:"large",
-    fontWeight: "bold",
-    color: 'white'
-  },
-}));
-
-const Mosaic = (props)=> {
-  const history = useHistory();
-  const classes = useStyles();
-
-  var handleClick = (category) =>{
-    // var categoryParsed = category.replace(/[^\w\s]/gi, '')
-    var route = "/category/" + category.CatID;
-
-    history.push(route
-      ,{...props, categoryInContext:category})
-
-  } 
-  if(props.english){
-      return (
-        <div className={classes.root}>
-          <Grid container spacing={2}>
-            {props.categories.map((category,index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} onClick={() => handleClick(category)}>
-                {index % 2 === 0 || index%3===2 ? (
-                  <Paper className={classes.paper}>
-                    {category.Type_English}
-                  </Paper>
-                ) : (
-                  <Paper className={classes.paper2}>
-                    {category.Type_English}
-                  </Paper>
-                )}
-              </Grid>
+        {status === "ready" && (
+          <ul className="categories__grid">
+            {categories.map((category, index) => (
+              <li key={category.CatID}>
+                {/* A real <Link> so each tile is keyboard focusable and can be
+                    opened in a new tab; the old version was a div + push(). */}
+                <Link
+                  className={`category-tile category-tile--${index % 5}`}
+                  to={`/category/${category.CatID}`}
+                >
+                  <span className="category-tile__name">
+                    {categoryName(category, english)}
+                  </span>
+                  {typeof category.RecipeCount === "number" && (
+                    <span className="category-tile__count">
+                      {copy.count(category.RecipeCount)}
+                    </span>
+                  )}
+                </Link>
+              </li>
             ))}
-          </Grid>
-        </div>
-      );
-  } else {
-      return (
-        <div className={classes.root}>
-          <Grid container spacing={2}>
-            {props.categories.map((category, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} onClick={() => handleClick(category)}>
-                {index%3===0 || index%3===2 ? (
-                  <Paper className={classes.paper}>{category.Type}</Paper>
-                ) : (
-                  <Paper className={classes.paper2}>{category.Type}</Paper>
-                )}
-              </Grid>
-            ))}
-          </Grid>
-        </div>
-      );
-  }
+          </ul>
+        )}
+      </div>
+    </section>
+  );
+};
 
-
-}
-
+export default CategoryMosaic;
