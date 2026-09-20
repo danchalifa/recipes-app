@@ -3,7 +3,9 @@ import { Route, Switch, useLocation } from "react-router-dom";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
 
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+// Resolve through node_modules rather than a relative path: CRA 5 refuses
+// imports that reach outside src/, which broke the production build.
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import Home from "./components/home.js";
