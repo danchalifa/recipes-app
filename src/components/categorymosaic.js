@@ -4,6 +4,24 @@ import { fetchCategories } from "../lib/api";
 import { categoryName } from "../lib/format";
 import "./categorymosaic.css";
 
+// One banner per category, keyed by CatID. The tile keeps its gradient
+// underneath, so a missing or failed image degrades to the old look rather
+// than to an empty box.
+const CategoryTileImage = ({ catId }) => {
+  const [failed, setFailed] = useState(false);
+  if (failed) return null;
+  return (
+    <img
+      className="category-tile__image"
+      src={`/category-images/${catId}.webp`}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailed(true)}
+    />
+  );
+};
+
 const CategoryMosaic = ({ english }) => {
   const [categories, setCategories] = useState([]);
   const [status, setStatus] = useState("loading");
@@ -68,6 +86,7 @@ const CategoryMosaic = ({ english }) => {
                   className={`category-tile category-tile--${index % 5}`}
                   to={`/category/${category.CatID}`}
                 >
+                  <CategoryTileImage catId={category.CatID} />
                   <span className="category-tile__name">
                     {categoryName(category, english)}
                   </span>

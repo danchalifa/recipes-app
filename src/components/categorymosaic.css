@@ -55,6 +55,35 @@
   text-decoration: none;
   box-shadow: var(--shadow);
   transition: transform 160ms ease, box-shadow 160ms ease;
+  position: relative;
+  overflow: hidden;
+  /* Creates a stacking context so the negative z-index layers below sit above
+     the tile's own gradient instead of disappearing behind it. */
+  isolation: isolate;
+}
+
+.category-tile__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* Scrim between the photo and the label. Heaviest on the left, where the text
+   sits; the banners are composed with their food to the right. */
+.category-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(18, 14, 28, 0.82) 0%,
+    rgba(18, 14, 28, 0.62) 45%,
+    rgba(18, 14, 28, 0.25) 100%
+  );
 }
 
 .category-tile:hover,
@@ -114,5 +143,16 @@
   .category-tile__count {
     white-space: nowrap;
     font-size: 0.78rem;
+  }
+
+  /* The phone layout puts the count hard against the right edge, so the scrim
+     has to stay dark the whole way across rather than fading out. */
+  .category-tile::after {
+    background: linear-gradient(
+      90deg,
+      rgba(18, 14, 28, 0.82) 0%,
+      rgba(18, 14, 28, 0.62) 60%,
+      rgba(18, 14, 28, 0.62) 100%
+    );
   }
 }

@@ -27,3 +27,4 @@ yarn-error.log*
 # The shipped WebPs live in public/recipe-images (~4.7 MB total).
 /build-images/raw
 /build-images/*.png
+/build-images/raw-categories
