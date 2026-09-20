@@ -13,6 +13,26 @@ const sanitize = (html) =>
     .replace(/ on\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
     .replace(/javascript:/gi, "");
 
+// The same card art, reused as a thumbnail in the hero. The box is laid out
+// immediately and the image fades in once decoded, so the title never jumps;
+// a recipe with no image drops the box entirely and the hero reads as text.
+const RecipeHeroImage = ({ recipe }) => {
+  const [state, setState] = useState("loading");
+  if (!recipe || !recipe.RowID || state === "failed") return null;
+  return (
+    <div className={`recipe-hero__figure recipe-hero__figure--${state}`}>
+      <img
+        className="recipe-hero__image"
+        src={`/recipe-images/${recipe.RowID}.webp`}
+        alt=""
+        decoding="async"
+        onLoad={() => setState("ready")}
+        onError={() => setState("failed")}
+      />
+    </div>
+  );
+};
+
 const RecipePage = ({ english, location }) => {
   const { recipeId, slug } = useParams();
 
@@ -115,27 +135,35 @@ const RecipePage = ({ english, location }) => {
     <article className="recipe-page">
       <header className="recipe-hero">
         <div className="recipe-hero__inner">
-          {recipe.CatID && (
-            <Link className="recipe-hero__back" to={`/category/${recipe.CatID}`}>
-              <span aria-hidden="true">←</span>{" "}
-              {categoryLabel || (english ? "Recipes" : "Recetas")}
-            </Link>
-          )}
-          <h1 className="recipe-hero__title">{recipeName(recipe, english)}</h1>
-          <dl className="recipe-hero__times">
-            <div>
-              <dt>{copy.prep}</dt>
-              <dd>{formatMinutes(recipe.Prep_Time, english)}</dd>
-            </div>
-            <div>
-              <dt>{copy.cook}</dt>
-              <dd>{formatMinutes(recipe.Cook_Time, english)}</dd>
-            </div>
-            <div>
-              <dt>{copy.total}</dt>
-              <dd>{formatMinutes(totalMinutes(recipe), english)}</dd>
-            </div>
-          </dl>
+          <div className="recipe-hero__text">
+            {recipe.CatID && (
+              <Link
+                className="recipe-hero__back"
+                to={`/category/${recipe.CatID}`}
+              >
+                <span aria-hidden="true">←</span>{" "}
+                {categoryLabel || (english ? "Recipes" : "Recetas")}
+              </Link>
+            )}
+            <h1 className="recipe-hero__title">
+              {recipeName(recipe, english)}
+            </h1>
+            <dl className="recipe-hero__times">
+              <div>
+                <dt>{copy.prep}</dt>
+                <dd>{formatMinutes(recipe.Prep_Time, english)}</dd>
+              </div>
+              <div>
+                <dt>{copy.cook}</dt>
+                <dd>{formatMinutes(recipe.Cook_Time, english)}</dd>
+              </div>
+              <div>
+                <dt>{copy.total}</dt>
+                <dd>{formatMinutes(totalMinutes(recipe), english)}</dd>
+              </div>
+            </dl>
+          </div>
+          <RecipeHeroImage recipe={recipe} />
         </div>
       </header>
 

@@ -15,6 +15,49 @@
   max-width: 860px;
   margin: 0 auto;
   padding: 26px 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.recipe-hero__text {
+  /* min-width:0 lets a long recipe title wrap instead of forcing the flex row
+     wider than the hero and squeezing the image. */
+  flex: 1;
+  min-width: 0;
+}
+
+.recipe-hero__figure {
+  flex: 0 0 200px;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+  /* Separates the photo from the purple behind it, which otherwise blends
+     with the darker corners of the image. */
+  outline: 2px solid rgba(255, 255, 255, 0.22);
+  outline-offset: -2px;
+}
+
+.recipe-hero__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+/* The box holds its space from the start, so fading the image in avoids the
+   title shifting sideways once the photo arrives. */
+.recipe-hero__figure--ready .recipe-hero__image {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recipe-hero__image {
+    transition: none;
+  }
 }
 
 .recipe-hero__back {
@@ -129,10 +172,19 @@
 @media (max-width: 640px) {
   .recipe-hero__inner {
     padding: 18px 14px 20px;
+    gap: 14px;
   }
 
   .recipe-hero__times {
     gap: 8px 20px;
+  }
+
+  /* Small enough that the title keeps most of the width on a phone, but still
+     clearly the dish rather than a decorative chip. */
+  .recipe-hero__figure {
+    flex-basis: 104px;
+    align-self: flex-start;
+    margin-top: 4px;
   }
 
   .recipe-body {
