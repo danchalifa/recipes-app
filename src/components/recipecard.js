@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   formatMinutes,
@@ -17,9 +17,23 @@ const RecipeCard = ({ recipe, english, showCategory }) => {
   const cook = minutes(recipe.Cook_Time);
   const total = totalMinutes(recipe);
 
+  // The coloured swatch stays underneath as the fallback: if a recipe has no
+  // image, or it fails to load, the card still looks deliberate.
+  const [artFailed, setArtFailed] = useState(false);
+
   return (
     <Link className="recipe-card" to={recipePath(recipe)}>
       <div className={`recipe-card__art swatch-${swatchIndex(recipe)}`}>
+        {!artFailed && (
+          <img
+            className="recipe-card__image"
+            src={`/recipe-images/${recipe.RowID}.webp`}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            onError={() => setArtFailed(true)}
+          />
+        )}
         {total > 0 && total <= 30 && (
           <span className="recipe-card__flag">
             {english ? "Quick" : "Rápida"}

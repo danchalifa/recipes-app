@@ -22,3 +22,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Recipe card art: full-size generated PNGs, kept only as an intermediate.
+# The shipped WebPs live in public/recipe-images (~4.7 MB total).
+/build-images/raw
+/build-images/*.png
