@@ -79,7 +79,7 @@
   margin: 0 0 14px;
   font-size: var(--step-heading);
   font-weight: 800;
-  color: var(--purple-dark);
+  color: var(--purple-text);
 }
 
 .recipe-section__text {

@@ -21,7 +21,7 @@
   width: 42px;
   height: 24px;
   border-radius: var(--radius-pill);
-  background: #c9c5d4;
+  background: var(--switch-off);
   transition: background 160ms ease;
 }
 
@@ -46,6 +46,6 @@
 }
 
 .lang-switch__input:focus-visible + .lang-switch__track {
-  outline: 3px solid var(--purple-dark);
+  outline: 3px solid var(--purple-text);
   outline-offset: 2px;
 }

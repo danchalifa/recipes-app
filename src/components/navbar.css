@@ -12,7 +12,7 @@
   min-height: var(--tap);
   font-weight: 800;
   font-size: 1.05rem;
-  color: var(--purple-dark) !important;
+  color: var(--purple-text) !important;
   /* Long Spanish brand name must not wrap the bar to two rows on a phone. */
   white-space: nowrap;
   overflow: hidden;
@@ -27,6 +27,12 @@
   border-color: var(--line);
 }
 
+/* Bootstrap bakes a dark stroke into the hamburger icon's data URI, so it has
+   to be re-drawn rather than recoloured when the bar goes dark. */
+:root[data-theme="dark"] .navbar-light .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(236,233,243,0.75)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
 .nav-links {
   font-weight: 700;
   color: var(--ink-soft) !important;
@@ -37,7 +43,7 @@
 .nav-links:hover,
 .nav-links:focus-visible {
   background-color: var(--purple-tint);
-  color: var(--purple-dark) !important;
+  color: var(--purple-text) !important;
 }
 
 .site-nav__search {
@@ -84,6 +90,14 @@
   background: var(--purple-dark);
 }
 
+/* Theme button and language switch travel together: side by side on a desktop,
+   one row at the bottom of the collapsed menu on a phone. */
+.site-nav__prefs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .site-nav__lang {
   display: flex;
   align-items: center;
@@ -116,7 +130,7 @@
     padding: 12px 8px !important;
   }
 
-  .site-nav__lang {
+  .site-nav__prefs {
     padding-bottom: 6px;
   }
 }

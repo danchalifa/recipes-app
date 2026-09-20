@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, Suspense, lazy, useEffect } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
@@ -15,6 +15,13 @@ import CategoryPage from "./components/recipemosaic.js";
 import RecipePage from "./components/recipe.js";
 import SearchPage from "./components/search.js";
 import Footer from "./components/footer.js";
+
+// Split into its own chunk: the admin tool is used by one person and has no
+// business adding weight to the bundle every visitor downloads.
+const AdminPage = lazy(() => import("./components/admin.js"));
+
+const isAdminPath = (pathname) =>
+  String(pathname || "").toLowerCase().startsWith("/admin");
 
 // Replaces the history.listen() call that used to run inside a render function
 // in featuredrecipies.js, which registered a new listener on every render.
@@ -33,6 +40,14 @@ const ScrollManager = () => {
   }, [pathname, hash]);
 
   return null;
+};
+
+// The admin tool stands on its own: the language toggle and the recipe nav are
+// noise there, and keeping the chrome off makes it obvious it is not part of
+// the public site.
+const Chrome = ({ children }) => {
+  const { pathname } = useLocation();
+  return isAdminPath(pathname) ? null : children;
 };
 
 class App extends Component {
@@ -57,9 +72,22 @@ class App extends Component {
 
     return (
       <main>
-        <Navbar toggleHandler={this.toggleHandler} english={english} />
+        <Chrome>
+          <Navbar toggleHandler={this.toggleHandler} english={english} />
+        </Chrome>
         <ScrollManager />
         <Switch>
+          {/* Intentionally absent from the nav, the footer and every link on the
+              site. Obscurity is not the protection though -- /api/admin checks
+              the password server side on every request. */}
+          <Route
+            path="/admin"
+            render={() => (
+              <Suspense fallback={<p className="admin-state">Loading…</p>}>
+                <AdminPage />
+              </Suspense>
+            )}
+          />
           <Route
             path="/"
             exact
@@ -89,7 +117,9 @@ class App extends Component {
             render={(props) => <RecipePage {...props} english={english} />}
           />
         </Switch>
-        <Footer english={english} />
+        <Chrome>
+          <Footer english={english} />
+        </Chrome>
       </main>
     );
   }

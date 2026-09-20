@@ -1,0 +1,257 @@
+/* Utilitarian on purpose: this page is for one person editing recipes, not for
+   visitors. It borrows the site's tokens so it does not feel like a different
+   application, and stops there. */
+
+.admin-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.admin-page--centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.admin-state {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-header h1 {
+  font-size: var(--step-heading);
+  margin: 0;
+  color: var(--ink);
+}
+
+.admin-login {
+  width: 100%;
+  max-width: 360px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 24px;
+}
+
+.admin-login__title {
+  font-size: var(--step-heading);
+  margin: 0 0 24px;
+  text-align: center;
+  color: var(--ink);
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.admin-field__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea,
+.admin-search {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  width: 100%;
+  min-height: var(--tap);
+}
+
+.admin-field textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.admin-field input:focus,
+.admin-field select:focus,
+.admin-field textarea:focus,
+.admin-search:focus {
+  outline: 2px solid var(--purple);
+  outline-offset: 1px;
+  border-color: var(--purple);
+}
+
+.admin-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--ink-soft);
+}
+
+.admin-check input {
+  width: 18px;
+  height: 18px;
+}
+
+.admin-button {
+  font: inherit;
+  font-weight: 600;
+  min-height: var(--tap);
+  padding: 0 20px;
+  border: 1px solid var(--purple);
+  border-radius: var(--radius-pill);
+  background: var(--purple);
+  color: #fff;
+  cursor: pointer;
+}
+
+.admin-button:hover:not(:disabled) {
+  background: var(--purple-dark);
+  border-color: var(--purple-dark);
+}
+
+.admin-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-button--ghost {
+  background: transparent;
+  color: var(--purple-text);
+}
+
+.admin-button--ghost:hover:not(:disabled) {
+  background: var(--purple-tint);
+  color: var(--purple-text);
+}
+
+.admin-notice,
+.admin-error {
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+}
+
+.admin-notice {
+  background: var(--purple-tint);
+  color: var(--purple-text);
+}
+
+.admin-error {
+  background: var(--danger-surface);
+  color: var(--danger);
+}
+
+.admin-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admin-toolbar .admin-search {
+  flex: 1;
+}
+
+.admin-toolbar .admin-button {
+  flex-shrink: 0;
+}
+
+.admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.admin-list li + li {
+  border-top: 1px solid var(--line);
+}
+
+.admin-list button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 14px 16px;
+  min-height: var(--tap);
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.admin-list button:hover:not(:disabled) {
+  background: var(--purple-tint);
+}
+
+.admin-list__name {
+  font-weight: 600;
+}
+
+.admin-list__meta {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+}
+
+.admin-list__empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--ink-faint);
+}
+
+.admin-form__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-form__header h2 {
+  margin: 0;
+  font-size: var(--step-heading);
+  color: var(--ink);
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0 16px;
+}
+
+@media (max-width: 640px) {
+  .admin-toolbar {
+    flex-direction: column;
+  }
+
+  .admin-header,
+  .admin-form__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-list__meta {
+    display: none;
+  }
+}

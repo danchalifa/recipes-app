@@ -8,7 +8,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 12px 0;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--surface-blur);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
 }
@@ -73,7 +73,7 @@
 .toolbar__select {
   padding-right: 34px;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%235b5766' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-image: var(--select-chevron);
   background-repeat: no-repeat;
   background-position: right 8px center;
   background-size: 20px;
@@ -104,7 +104,7 @@
 
 .chip:hover {
   border-color: var(--purple);
-  color: var(--purple-dark);
+  color: var(--purple-text);
 }
 
 .chip[aria-pressed="true"] {
@@ -132,7 +132,7 @@
   padding: 6px 4px;
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--purple-dark);
+  color: var(--purple-text);
   text-decoration: underline;
   cursor: pointer;
 }

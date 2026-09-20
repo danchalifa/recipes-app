@@ -1,0 +1,26 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Same comfortable touch target as the rest of the bar's controls. */
+  width: var(--tap);
+  height: var(--tap);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.theme-toggle:hover {
+  background: var(--purple-tint);
+  border-color: var(--line);
+  color: var(--purple-text);
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { useHistory, useLocation } from "react-router-dom";
 import ToggleSwitch from "./toggleswitch.js";
+import ThemeToggle from "./themetoggle.js";
 import "./navbar.css";
 
 const SiteNavbar = ({ toggleHandler, english }) => {
@@ -103,9 +104,12 @@ const SiteNavbar = ({ toggleHandler, english }) => {
           </button>
         </form>
 
-        <div className="site-nav__lang">
-          <ToggleSwitch toggleHandler={toggleHandler} english={english} />
-          <span className="site-nav__lang-label">English</span>
+        <div className="site-nav__prefs">
+          <ThemeToggle english={english} />
+          <div className="site-nav__lang">
+            <ToggleSwitch toggleHandler={toggleHandler} english={english} />
+            <span className="site-nav__lang-label">English</span>
+          </div>
         </div>
       </Navbar.Collapse>
     </Navbar>

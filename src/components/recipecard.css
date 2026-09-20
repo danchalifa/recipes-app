@@ -41,9 +41,10 @@
   position: absolute;
   top: 8px;
   left: 8px;
+  /* Above the card image, which is absolutely positioned to fill the art box. */
   z-index: 1;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--purple-dark);
+  background: var(--surface-scrim);
+  color: var(--purple-text);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -66,7 +67,7 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--purple-dark);
+  color: var(--purple-text);
 }
 
 .recipe-card__title {

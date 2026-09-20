@@ -4,3 +4,10 @@
   width: 100%;
   height: auto;
 }
+
+/* The masthead art is a white card. Left alone it is the one piece of glare on
+   an otherwise dark page; dimming it keeps the artwork without the flashbang.
+   Drop this rule if a dark version of the banner image ever ships. */
+:root[data-theme="dark"] .center {
+  filter: brightness(0.72);
+}
