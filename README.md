@@ -77,6 +77,25 @@ whereas a deploy busts that cache for free.
 Concurrent edits are caught rather than silently merged: the blob SHA the form
 was opened with is checked on save, and a stale one returns 409.
 
+### Photos
+
+The form takes a photo for the recipe. Nothing about it is stored in
+`data/recipes.json`: the card and the recipe hero both build their `src` from
+the RowID, so a photo is simply the file `public/recipe-images/<RowID>.webp`,
+committed by `api/_images.js` the same way the data is.
+
+The browser does the resizing (`src/lib/image.js`). Any image is centre-cropped
+to 16:9 and re-encoded as a 480x270 WebP -- matching the 289 generated photos
+already in the repo -- before it is sent, which keeps a phone photo from having
+to travel base64'd through Vercel's 4.5 MB body limit and keeps the serverless
+function free of an image library. The server still checks the RIFF/WEBP
+container and a 400 KB ceiling, because the client cannot be trusted.
+
+A photo is a second commit, made after the recipe itself, so a failed upload
+leaves the recipe saved and showing its coloured swatch -- the same fallback
+used by any recipe without a photo. Browsers that cannot encode WebP (Safari
+before 16) are told so rather than silently uploading a PNG named `.webp`.
+
 ### Setup
 
 Copy `.env.example` to `.env.local` for local work, and set the same variables

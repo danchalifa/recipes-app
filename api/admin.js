@@ -4,6 +4,7 @@
 
 const { checkPassword, verifyRequest, loginCookie, logoutCookie } = require('./_auth');
 const { readRecipes, writeRecipes } = require('./_github');
+const { writeRecipeImage } = require('./_images');
 const { normalizeRecipe, toFormValues, ValidationError } = require('./_recipe');
 
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -111,7 +112,26 @@ module.exports = async (req, res) => {
         `${isCreate ? 'Add' : 'Update'} recipe: ${label}`
       );
 
-      return send(res, 200, { ok: true, rowId, commit, created: isCreate });
+      // The photo is a second commit, and deliberately after the recipe: the
+      // Contents API writes one file at a time, and if this half fails the
+      // recipe is already safely saved and shows its coloured swatch instead.
+      // A new recipe's RowID only exists once the block above has run, which is
+      // why the image cannot be uploaded before the save.
+      let imageError = null;
+      if (body.image) {
+        try {
+          await writeRecipeImage(rowId, body.image);
+        } catch (error) {
+          if (error.validation) {
+            imageError = error.message;
+          } else {
+            console.error('[admin] image', error);
+            imageError = 'The recipe saved, but the photo did not upload.';
+          }
+        }
+      }
+
+      return send(res, 200, { ok: true, rowId, commit, created: isCreate, imageError });
     }
 
     return send(res, 400, { error: 'Unknown action.' });

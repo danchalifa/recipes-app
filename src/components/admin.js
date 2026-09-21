@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { deburr } from "../lib/format";
+import { IMAGE_HEIGHT, IMAGE_WIDTH, prepareRecipeImage } from "../lib/image";
 import "./admin.css";
 
 // Reached only by typing /admin -- it is deliberately absent from the nav, the
@@ -83,7 +84,128 @@ const LoginForm = ({ onSuccess }) => {
   );
 };
 
-const RecipeForm = ({ categories, values, onChange, onSubmit, onCancel, busy, isNew }) => {
+// The photo is not part of the recipe record: the card and the hero both build
+// their src from the RowID, so uploading one means committing
+// public/recipe-images/<RowID>.webp and nothing else. That is why this sits
+// beside the form fields rather than inside `values`.
+const PhotoField = ({ rowId, image, onImage, busy }) => {
+  const [error, setError] = useState("");
+  const [working, setWorking] = useState(false);
+  // A recipe that has never had a photo 404s here; the box then shows the
+  // placeholder instead of a broken image.
+  const [existingFailed, setExistingFailed] = useState(false);
+
+  const existing = rowId && !existingFailed ? `/recipe-images/${rowId}.webp` : null;
+
+  const choose = async (event) => {
+    const file = event.target.files && event.target.files[0];
+    // Clearing the input means picking the same file twice in a row still fires
+    // a change event, which is what happens after a failed attempt.
+    event.target.value = "";
+    if (!file) return;
+
+    setWorking(true);
+    setError("");
+    try {
+      onImage(await prepareRecipeImage(file));
+    } catch (err) {
+      setError(err.message);
+      onImage(null);
+    } finally {
+      setWorking(false);
+    }
+  };
+
+  return (
+    <div className="admin-photo">
+      <span className="admin-field__label">Photo</span>
+
+      <div className="admin-photo__row">
+        <div className="admin-photo__frame">
+          {image ? (
+            <img className="admin-photo__image" src={image.preview} alt="" />
+          ) : existing ? (
+            <img
+              className="admin-photo__image"
+              src={existing}
+              alt=""
+              onError={() => setExistingFailed(true)}
+            />
+          ) : (
+            <span className="admin-photo__empty">No photo</span>
+          )}
+        </div>
+
+        <div className="admin-photo__controls">
+          <label className="admin-button admin-button--ghost admin-photo__pick">
+            {working
+              ? "Preparing…"
+              : image || existing
+              ? "Choose a different photo"
+              : "Choose a photo"}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={choose}
+              disabled={busy || working}
+            />
+          </label>
+
+          {image && (
+            <button
+              className="admin-button admin-button--ghost"
+              type="button"
+              onClick={() => {
+                onImage(null);
+                setError("");
+              }}
+            >
+              Undo
+            </button>
+          )}
+
+          <p className="admin-photo__note">
+            Saved at <strong>{IMAGE_WIDTH} × {IMAGE_HEIGHT}</strong> (16:9), WebP,
+            about 20 KB — the same as every other photo on the site. Upload
+            anything larger and it is cropped from the centre and resized here in
+            the browser, so <strong>1440 × 810</strong> or bigger, landscape,
+            gives the sharpest result. Below {IMAGE_WIDTH} × {IMAGE_HEIGHT} it
+            will look soft.
+          </p>
+
+          {image && (
+            <p className="admin-photo__meta">
+              From {image.sourceWidth} × {image.sourceHeight} →{" "}
+              {IMAGE_WIDTH} × {IMAGE_HEIGHT}, {Math.round(image.bytes / 1024)} KB.
+              {image.lowResolution
+                ? " That original is smaller than the display size, so this will look soft."
+                : ""}{" "}
+              It uploads when you save.
+            </p>
+          )}
+
+          {error && (
+            <p className="admin-error" role="alert">
+              {error}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const RecipeForm = ({
+  categories,
+  values,
+  onChange,
+  onSubmit,
+  onCancel,
+  busy,
+  isNew,
+  image,
+  onImage,
+}) => {
   const set = (field) => (event) => {
     const target = event.target;
     onChange({
@@ -145,6 +267,8 @@ const RecipeForm = ({ categories, values, onChange, onSubmit, onCancel, busy, is
         <span>One of Mamá&rsquo;s own recipes</span>
       </label>
 
+      <PhotoField rowId={isNew ? null : values.RowID} image={image} onImage={onImage} busy={busy} />
+
       <div className="admin-grid">
         <label className="admin-field">
           <span className="admin-field__label">Ingredientes * (one per line)</span>
@@ -189,6 +313,7 @@ const AdminPage = () => {
   const [sha, setSha] = useState(null);
   const [editing, setEditing] = useState(null);
   const [values, setValues] = useState(EMPTY);
+  const [image, setImage] = useState(null);
   const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
@@ -241,6 +366,7 @@ const AdminPage = () => {
   const openNew = () => {
     setEditing("new");
     setValues(EMPTY);
+    setImage(null);
     setNotice(null);
     setError("");
   };
@@ -249,6 +375,7 @@ const AdminPage = () => {
     setBusy(true);
     setError("");
     setNotice(null);
+    setImage(null);
     try {
       const data = await post({ action: "load", id });
       setValues(data.values);
@@ -271,11 +398,19 @@ const AdminPage = () => {
         id: editing === "new" ? null : editing,
         sha,
         recipe: values,
+        image: image ? image.base64 : undefined,
       });
       setNotice(
-        `${result.created ? "Added" : "Saved"} — live on the site in about a minute.`
+        // The photo is a separate commit, so it can fail on its own. Saying so is
+        // better than a success message over a recipe that quietly has no photo.
+        result.imageError
+          ? `${result.created ? "Added" : "Saved"}, but the photo did not upload: ${
+              result.imageError
+            }`
+          : `${result.created ? "Added" : "Saved"} — live on the site in about a minute.`
       );
       setEditing(null);
+      setImage(null);
       await loadList();
     } catch (err) {
       setError(err.message);
@@ -337,9 +472,14 @@ const AdminPage = () => {
           values={values}
           onChange={setValues}
           onSubmit={save}
-          onCancel={() => setEditing(null)}
+          onCancel={() => {
+            setEditing(null);
+            setImage(null);
+          }}
           busy={busy}
           isNew={editing === "new"}
+          image={image}
+          onImage={setImage}
         />
       ) : (
         <>
